@@ -16,8 +16,8 @@ export default function StepIndicator({ steps, currentStep }: Props) {
             <motion.div
               className={`w-2.5 h-2.5 rounded-full transition-colors duration-300 ${
                 i <= currentStep
-                  ? "bg-indigo-400"
-                  : "bg-white/10"
+                  ? "bg-indigo-500"
+                  : "bg-gray-300"
               }`}
               animate={i === currentStep ? { scale: [1, 1.3, 1] } : {}}
               transition={{ repeat: Infinity, duration: 2 }}
@@ -25,8 +25,8 @@ export default function StepIndicator({ steps, currentStep }: Props) {
             <span
               className={`text-[10px] uppercase tracking-widest transition-colors duration-300 ${
                 i <= currentStep
-                  ? "text-indigo-300"
-                  : "text-white/20"
+                  ? "text-indigo-600"
+                  : "text-gray-300"
               }`}
             >
               {label}
@@ -35,7 +35,7 @@ export default function StepIndicator({ steps, currentStep }: Props) {
           {i < steps.length - 1 && (
             <div
               className={`w-12 h-px transition-colors duration-300 mb-5 ${
-                i < currentStep ? "bg-indigo-400/50" : "bg-white/10"
+                i < currentStep ? "bg-indigo-400" : "bg-gray-200"
               }`}
             />
           )}

@@ -10,6 +10,7 @@ import {
   INSIGHTS_COLORS,
   GOAL_OPTIONS,
 } from "@/lib/personality-data";
+import LocationAutocomplete from "@/components/LocationAutocomplete";
 import type { PersonalityInput, OnboardingStep } from "@/lib/types";
 
 const STEPS: OnboardingStep[] = ["personality", "astrology", "goals"];
@@ -38,7 +39,7 @@ export default function OnboardingPage() {
 
   const canProceed = () => {
     if (step === 0) return input.mbtiType && input.enneagramType && input.insightsColor;
-    if (step === 1) return input.birthDate;
+    if (step === 1) return input.birthDate && input.birthLocation;
     return true;
   };
 
@@ -75,8 +76,8 @@ export default function OnboardingPage() {
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-center px-6 py-16">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/3 left-1/3 w-80 h-80 bg-indigo-600/[0.05] rounded-full blur-[100px]" />
-        <div className="absolute bottom-1/3 right-1/3 w-60 h-60 bg-purple-600/[0.04] rounded-full blur-[80px]" />
+        <div className="absolute top-1/3 left-1/3 w-80 h-80 bg-indigo-200/30 rounded-full blur-[100px]" />
+        <div className="absolute bottom-1/3 right-1/3 w-60 h-60 bg-purple-200/20 rounded-full blur-[80px]" />
       </div>
 
       <div className="relative z-10 w-full max-w-lg">
@@ -106,21 +107,21 @@ export default function OnboardingPage() {
           <button
             onClick={back}
             disabled={step === 0}
-            className="px-5 py-2.5 text-sm text-white/30 hover:text-white/60 transition-colors disabled:opacity-0 disabled:pointer-events-none cursor-pointer"
+            className="px-5 py-2.5 text-sm text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-0 disabled:pointer-events-none cursor-pointer"
           >
             Back
           </button>
           <button
             onClick={next}
             disabled={!canProceed() || loading}
-            className="px-8 py-2.5 rounded-full bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-200 text-sm font-medium border border-indigo-500/20 hover:border-indigo-500/30 transition-all disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+            className="px-8 py-2.5 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium transition-all shadow-md shadow-indigo-500/20 disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
           >
             {loading ? (
               <span className="flex items-center gap-2">
                 <motion.span
                   animate={{ rotate: 360 }}
                   transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                  className="inline-block w-4 h-4 border-2 border-indigo-300/30 border-t-indigo-300 rounded-full"
+                  className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
                 />
                 Synthesizing...
               </span>
@@ -149,19 +150,19 @@ function StepPersonality({ input, updateField }: StepProps) {
     <div className="space-y-8">
       <div>
         <h2
-          className="text-2xl font-light mb-1 tracking-tight"
+          className="text-2xl font-light mb-1 tracking-tight text-gray-900"
           style={{ fontFamily: "var(--font-serif)" }}
         >
           Your personality frameworks
         </h2>
-        <p className="text-white/30 text-sm">
+        <p className="text-gray-400 text-sm">
           The core systems that shape how you think, feel, and relate.
         </p>
       </div>
 
       {/* MBTI */}
       <div>
-        <label className="text-xs uppercase tracking-[0.2em] text-white/40 mb-3 block">
+        <label className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-3 block">
           Myers-Briggs Type
         </label>
         <div className="grid grid-cols-4 gap-2">
@@ -171,8 +172,8 @@ function StepPersonality({ input, updateField }: StepProps) {
               onClick={() => updateField("mbtiType", type)}
               className={`py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer ${
                 input.mbtiType === type
-                  ? "bg-indigo-500/20 text-indigo-200 border border-indigo-500/30"
-                  : "bg-white/[0.03] text-white/40 border border-white/[0.06] hover:bg-white/[0.06] hover:text-white/60"
+                  ? "bg-indigo-100 text-indigo-700 border border-indigo-300"
+                  : "bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100 hover:text-gray-700"
               }`}
             >
               {type}
@@ -183,19 +184,17 @@ function StepPersonality({ input, updateField }: StepProps) {
 
       {/* Enneagram */}
       <div>
-        <label className="text-xs uppercase tracking-[0.2em] text-white/40 mb-3 block">
+        <label className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-3 block">
           Enneagram Type
         </label>
         <select
           value={input.enneagramType}
           onChange={(e) => updateField("enneagramType", e.target.value)}
-          className="w-full py-3 px-4 rounded-lg bg-white/[0.03] border border-white/[0.06] text-white/80 text-sm appearance-none cursor-pointer focus:outline-none focus:border-indigo-500/30"
+          className="w-full py-3 px-4 rounded-lg bg-white border border-gray-200 text-gray-700 text-sm appearance-none cursor-pointer focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/20"
         >
-          <option value="" className="bg-[#0f0a2e]">
-            Select your type...
-          </option>
+          <option value="">Select your type...</option>
           {ENNEAGRAM_TYPES.map((t) => (
-            <option key={t.value} value={t.value} className="bg-[#0f0a2e]">
+            <option key={t.value} value={t.value}>
               {t.label}
             </option>
           ))}
@@ -204,7 +203,7 @@ function StepPersonality({ input, updateField }: StepProps) {
 
       {/* Insights */}
       <div>
-        <label className="text-xs uppercase tracking-[0.2em] text-white/40 mb-3 block">
+        <label className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-3 block">
           Insights Discovery Color
         </label>
         <div className="grid grid-cols-2 gap-3">
@@ -214,8 +213,8 @@ function StepPersonality({ input, updateField }: StepProps) {
               onClick={() => updateField("insightsColor", c.value)}
               className={`flex items-center gap-3 p-3 rounded-xl transition-all cursor-pointer ${
                 input.insightsColor === c.value
-                  ? "bg-white/[0.08] border border-white/[0.12]"
-                  : "bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.05]"
+                  ? "bg-indigo-50 border border-indigo-200"
+                  : "bg-white border border-gray-200 hover:bg-gray-50"
               }`}
             >
               <div
@@ -223,8 +222,8 @@ function StepPersonality({ input, updateField }: StepProps) {
                 style={{ backgroundColor: c.color }}
               />
               <div className="text-left">
-                <div className="text-sm text-white/70">{c.label}</div>
-                <div className="text-[10px] text-white/30">{c.description}</div>
+                <div className="text-sm text-gray-700">{c.label}</div>
+                <div className="text-[10px] text-gray-400">{c.description}</div>
               </div>
             </button>
           ))}
@@ -239,50 +238,48 @@ function StepAstrology({ input, updateField }: StepProps) {
     <div className="space-y-8">
       <div>
         <h2
-          className="text-2xl font-light mb-1 tracking-tight"
+          className="text-2xl font-light mb-1 tracking-tight text-gray-900"
           style={{ fontFamily: "var(--font-serif)" }}
         >
           Your astrological data
         </h2>
-        <p className="text-white/30 text-sm">
+        <p className="text-gray-400 text-sm">
           Birth details help us map emotional and archetypal tendencies.
         </p>
       </div>
 
       <div>
-        <label className="text-xs uppercase tracking-[0.2em] text-white/40 mb-3 block">
+        <label className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-3 block">
           Birth Date
         </label>
         <input
           type="date"
           value={input.birthDate}
           onChange={(e) => updateField("birthDate", e.target.value)}
-          className="w-full py-3 px-4 rounded-lg bg-white/[0.03] border border-white/[0.06] text-white/80 text-sm focus:outline-none focus:border-indigo-500/30"
+          className="w-full py-3 px-4 rounded-lg bg-white border border-gray-200 text-gray-700 text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/20"
         />
       </div>
 
       <div>
-        <label className="text-xs uppercase tracking-[0.2em] text-white/40 mb-3 block">
-          Birth Time <span className="normal-case tracking-normal text-white/20">(optional)</span>
+        <label className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-3 block">
+          Birth Time <span className="normal-case tracking-normal text-gray-300">(optional)</span>
         </label>
         <input
           type="time"
           value={input.birthTime}
           onChange={(e) => updateField("birthTime", e.target.value)}
-          className="w-full py-3 px-4 rounded-lg bg-white/[0.03] border border-white/[0.06] text-white/80 text-sm focus:outline-none focus:border-indigo-500/30"
+          className="w-full py-3 px-4 rounded-lg bg-white border border-gray-200 text-gray-700 text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/20"
         />
       </div>
 
       <div>
-        <label className="text-xs uppercase tracking-[0.2em] text-white/40 mb-3 block">
-          Birth Location <span className="normal-case tracking-normal text-white/20">(optional)</span>
+        <label className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-3 block">
+          Birth Location
         </label>
-        <input
-          type="text"
+        <LocationAutocomplete
           value={input.birthLocation}
-          onChange={(e) => updateField("birthLocation", e.target.value)}
-          placeholder="City, State/Country"
-          className="w-full py-3 px-4 rounded-lg bg-white/[0.03] border border-white/[0.06] text-white/80 text-sm placeholder:text-white/15 focus:outline-none focus:border-indigo-500/30"
+          onChange={(val) => updateField("birthLocation", val)}
+          className="w-full py-3 px-4 rounded-lg bg-white border border-gray-200 text-gray-700 text-sm placeholder:text-gray-300 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/20"
         />
       </div>
     </div>
@@ -305,12 +302,12 @@ function StepGoals({ input, updateField }: StepProps) {
     <div className="space-y-8">
       <div>
         <h2
-          className="text-2xl font-light mb-1 tracking-tight"
+          className="text-2xl font-light mb-1 tracking-tight text-gray-900"
           style={{ fontFamily: "var(--font-serif)" }}
         >
           What are you seeking?
         </h2>
-        <p className="text-white/30 text-sm">
+        <p className="text-gray-400 text-sm">
           Select what you want to understand better. Choose as many as you like.
         </p>
       </div>
@@ -322,20 +319,20 @@ function StepGoals({ input, updateField }: StepProps) {
             onClick={() => toggleGoal(goal)}
             className={`flex items-center gap-3 p-4 rounded-xl text-left transition-all cursor-pointer ${
               goals.includes(goal)
-                ? "bg-indigo-500/10 border border-indigo-500/20"
-                : "bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.05]"
+                ? "bg-indigo-50 border border-indigo-200"
+                : "bg-white border border-gray-200 hover:bg-gray-50"
             }`}
           >
             <div
               className={`w-5 h-5 rounded-md border flex items-center justify-center shrink-0 transition-all ${
                 goals.includes(goal)
-                  ? "bg-indigo-500/30 border-indigo-500/40"
-                  : "border-white/10"
+                  ? "bg-indigo-500 border-indigo-500"
+                  : "border-gray-300"
               }`}
             >
               {goals.includes(goal) && (
                 <svg
-                  className="w-3 h-3 text-indigo-200"
+                  className="w-3 h-3 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -349,7 +346,7 @@ function StepGoals({ input, updateField }: StepProps) {
                 </svg>
               )}
             </div>
-            <span className="text-sm text-white/60">{goal}</span>
+            <span className="text-sm text-gray-600">{goal}</span>
           </button>
         ))}
       </div>

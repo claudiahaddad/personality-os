@@ -77,5 +77,5 @@ ${profileSummary}
 
 ${historyText ? `Recent conversation:\n${historyText}\n` : ""}Question: "${question}"
 
-Respond in 2-4 paragraphs of flowing prose. Be psychologically nuanced, specific to their type combinations, and emotionally resonant. End with 2-3 follow-up questions (prefix each with "→"). No bullet points.`;
+Keep it short — 2-3 casual paragraphs max, like you're chatting with a friend. Be specific to their personality types but keep the language light, warm, and a little funny. Hype them up where it's genuine. Skip the therapy-speak. End with 2-3 follow-up questions they'd actually want to click on (prefix each with "→").`;
 }

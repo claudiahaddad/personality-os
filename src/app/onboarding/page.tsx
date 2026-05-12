@@ -8,14 +8,12 @@ import {
   MBTI_TYPES,
   ENNEAGRAM_TYPES,
   INSIGHTS_COLORS,
-  ATTACHMENT_STYLES,
-  LOVE_LANGUAGES,
   GOAL_OPTIONS,
 } from "@/lib/personality-data";
 import type { PersonalityInput, OnboardingStep } from "@/lib/types";
 
-const STEPS: OnboardingStep[] = ["personality", "astrology", "optional", "goals"];
-const STEP_LABELS = ["Frameworks", "Astrology", "Optional", "Goals"];
+const STEPS: OnboardingStep[] = ["personality", "astrology", "goals"];
+const STEP_LABELS = ["Frameworks", "Astrology", "Goals"];
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -28,10 +26,6 @@ export default function OnboardingPage() {
     birthDate: "",
     birthTime: "",
     birthLocation: "",
-    attachmentStyle: "",
-    loveLanguage: "",
-    careerField: "",
-    relationshipStatus: "",
     goals: [],
   });
 
@@ -103,9 +97,6 @@ export default function OnboardingPage() {
               <StepAstrology input={input} updateField={updateField} />
             )}
             {step === 2 && (
-              <StepOptional input={input} updateField={updateField} />
-            )}
-            {step === 3 && (
               <StepGoals input={input} updateField={updateField} />
             )}
           </motion.div>
@@ -293,111 +284,6 @@ function StepAstrology({ input, updateField }: StepProps) {
           placeholder="City, State/Country"
           className="w-full py-3 px-4 rounded-lg bg-white/[0.03] border border-white/[0.06] text-white/80 text-sm placeholder:text-white/15 focus:outline-none focus:border-indigo-500/30"
         />
-      </div>
-    </div>
-  );
-}
-
-function StepOptional({ input, updateField }: StepProps) {
-  return (
-    <div className="space-y-8">
-      <div>
-        <h2
-          className="text-2xl font-light mb-1 tracking-tight"
-          style={{ fontFamily: "var(--font-serif)" }}
-        >
-          Deepen your profile
-        </h2>
-        <p className="text-white/30 text-sm">
-          These are optional — but they unlock richer, more specific insights.
-        </p>
-      </div>
-
-      {/* Attachment Style */}
-      <div>
-        <label className="text-xs uppercase tracking-[0.2em] text-white/40 mb-3 block">
-          Attachment Style
-        </label>
-        <div className="grid grid-cols-1 gap-2">
-          {ATTACHMENT_STYLES.map((s) => (
-            <button
-              key={s.value}
-              onClick={() => updateField("attachmentStyle", s.value)}
-              className={`flex items-start gap-3 p-3 rounded-xl text-left transition-all cursor-pointer ${
-                input.attachmentStyle === s.value
-                  ? "bg-white/[0.08] border border-white/[0.12]"
-                  : "bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.05]"
-              }`}
-            >
-              <div
-                className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${
-                  input.attachmentStyle === s.value
-                    ? "bg-indigo-400"
-                    : "bg-white/10"
-                }`}
-              />
-              <div>
-                <div className="text-sm text-white/70">{s.label}</div>
-                <div className="text-[10px] text-white/30">{s.description}</div>
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Love Language */}
-      <div>
-        <label className="text-xs uppercase tracking-[0.2em] text-white/40 mb-3 block">
-          Love Language
-        </label>
-        <div className="flex flex-wrap gap-2">
-          {LOVE_LANGUAGES.map((lang) => (
-            <button
-              key={lang}
-              onClick={() => updateField("loveLanguage", lang)}
-              className={`px-4 py-2 rounded-full text-xs transition-all cursor-pointer ${
-                input.loveLanguage === lang
-                  ? "bg-indigo-500/20 text-indigo-200 border border-indigo-500/30"
-                  : "bg-white/[0.03] text-white/40 border border-white/[0.06] hover:bg-white/[0.06]"
-              }`}
-            >
-              {lang}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Career + Relationship */}
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="text-xs uppercase tracking-[0.2em] text-white/40 mb-3 block">
-            Career Field
-          </label>
-          <input
-            type="text"
-            value={input.careerField}
-            onChange={(e) => updateField("careerField", e.target.value)}
-            placeholder="e.g. Tech, Finance"
-            className="w-full py-3 px-4 rounded-lg bg-white/[0.03] border border-white/[0.06] text-white/80 text-sm placeholder:text-white/15 focus:outline-none focus:border-indigo-500/30"
-          />
-        </div>
-        <div>
-          <label className="text-xs uppercase tracking-[0.2em] text-white/40 mb-3 block">
-            Relationship Status
-          </label>
-          <select
-            value={input.relationshipStatus}
-            onChange={(e) => updateField("relationshipStatus", e.target.value)}
-            className="w-full py-3 px-4 rounded-lg bg-white/[0.03] border border-white/[0.06] text-white/80 text-sm appearance-none cursor-pointer focus:outline-none focus:border-indigo-500/30"
-          >
-            <option value="" className="bg-[#0f0a2e]">Select...</option>
-            <option value="single" className="bg-[#0f0a2e]">Single</option>
-            <option value="dating" className="bg-[#0f0a2e]">Dating</option>
-            <option value="relationship" className="bg-[#0f0a2e]">In a relationship</option>
-            <option value="married" className="bg-[#0f0a2e]">Married</option>
-            <option value="complicated" className="bg-[#0f0a2e]">It&apos;s complicated</option>
-          </select>
-        </div>
       </div>
     </div>
   );

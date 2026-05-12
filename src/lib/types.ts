@@ -45,5 +45,4 @@ export interface ExplorationMessage {
 export type OnboardingStep =
   | "personality"
   | "astrology"
-  | "optional"
   | "goals";

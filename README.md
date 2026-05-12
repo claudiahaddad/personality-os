@@ -28,8 +28,8 @@ Personality OS synthesizes multiple personality frameworks — **Myers-Briggs**,
 npm install
 
 # Set up environment variables
-cp .env.example .env.local
-# Edit .env.local and add your OpenAI API key
+echo "OPENAI_API_KEY=your_key_here" > .env.local
+# Replace your_key_here with your actual OpenAI API key
 
 # Run development server
 npm run dev

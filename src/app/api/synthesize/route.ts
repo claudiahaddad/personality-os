@@ -18,17 +18,17 @@ export async function POST(req: NextRequest) {
   const openai = new OpenAI({ apiKey });
 
   const completion = await openai.chat.completions.create({
-    model: "gpt-4o",
+    model: "gpt-4o-mini",
     messages: [
       {
         role: "system",
         content:
-          "You are a personality synthesis engine. Return only valid JSON.",
+          "You are a personality synthesis engine combining MBTI, Enneagram, Insights Discovery, and astrology. Return only valid JSON.",
       },
       { role: "user", content: prompt },
     ],
     temperature: 0.8,
-    max_tokens: 3000,
+    max_tokens: 2500,
   });
 
   const raw = completion.choices[0]?.message?.content ?? "";

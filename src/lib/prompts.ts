@@ -1,98 +1,81 @@
-import { PersonalityInput } from "./types";
+import { PersonalityInput, PersonalityProfile } from "./types";
 
 export function buildSynthesisPrompt(input: PersonalityInput): string {
-  return `You are Personality OS — an emotionally intelligent personality synthesis engine that combines multiple personality frameworks into one cohesive, deeply insightful profile.
+  const data = [
+    `MBTI: ${input.mbtiType}`,
+    `Enneagram: ${input.enneagramType}`,
+    `Insights Color: ${input.insightsColor}`,
+    `Born: ${input.birthDate}`,
+    input.birthTime && `Birth Time: ${input.birthTime}`,
+    input.birthLocation && `Location: ${input.birthLocation}`,
+    input.goals?.length && `Goals: ${input.goals.join(", ")}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
 
-You have deep expertise in:
-- Myers-Briggs Type Indicator (MBTI) cognitive functions
-- Enneagram motivations, fears, and growth paths
-- Insights Discovery color energies and communication styles
-- Astrology (sun sign, general archetypal tendencies)
-- Attachment theory
-- Love languages
+  return `Synthesize this personality data into a unified profile.
 
-The user has provided the following personality data:
-- MBTI Type: ${input.mbtiType}
-- Enneagram Type: ${input.enneagramType}
-- Insights Discovery Color: ${input.insightsColor}
-- Birth Date: ${input.birthDate}
-${input.birthTime ? `- Birth Time: ${input.birthTime}` : ""}
-${input.birthLocation ? `- Birth Location: ${input.birthLocation}` : ""}
-${input.attachmentStyle ? `- Attachment Style: ${input.attachmentStyle}` : ""}
-${input.loveLanguage ? `- Love Language: ${input.loveLanguage}` : ""}
-${input.careerField ? `- Career Field: ${input.careerField}` : ""}
-${input.relationshipStatus ? `- Relationship Status: ${input.relationshipStatus}` : ""}
-${input.goals?.length ? `- Personal Goals: ${input.goals.join(", ")}` : ""}
+${data}
 
-Synthesize these frameworks into a unified personality profile. The tone should be:
-- Emotionally resonant and specific (not generic positivity)
-- Psychologically nuanced
-- Actionable
-- Intimate and insightful — make them feel deeply seen
-
-Return a JSON object with this exact structure:
+Return JSON:
 {
-  "coreArchetype": "A compelling 2-4 word archetype name",
-  "archetypeDescription": "A rich 2-3 sentence description of their core archetype that weaves together insights from all frameworks",
-  "strengths": ["5 specific strengths derived from the synthesis"],
-  "weaknesses": ["5 specific growth edges/blind spots"],
+  "coreArchetype": "2-4 word name",
+  "archetypeDescription": "2-3 sentences weaving all frameworks",
+  "strengths": ["5 items"],
+  "weaknesses": ["5 growth edges"],
   "relationshipTendencies": {
-    "attachmentTendency": "Their attachment pattern description",
-    "communicationStyle": "How they communicate in relationships",
-    "conflictPattern": "How they handle conflict",
-    "emotionalNeeds": "Their core emotional needs",
-    "idealPartnerDynamics": "What they need in a partner"
+    "attachmentTendency": "...",
+    "communicationStyle": "...",
+    "conflictPattern": "...",
+    "emotionalNeeds": "...",
+    "idealPartnerDynamics": "..."
   },
   "careerAlignment": {
-    "idealEnvironments": ["3-4 work environments where they thrive"],
-    "leadershipStyle": "Their natural leadership approach",
-    "burnoutTriggers": ["3 specific burnout triggers"],
-    "motivationStyle": "What drives them",
-    "collaborationPreference": "How they work best with others"
+    "idealEnvironments": ["3-4 items"],
+    "leadershipStyle": "...",
+    "burnoutTriggers": ["3 items"],
+    "motivationStyle": "...",
+    "collaborationPreference": "..."
   },
-  "compatibilityInsights": ["4 specific insights about compatibility"],
-  "growthRecommendations": ["5 actionable growth recommendations"],
+  "compatibilityInsights": ["4 items"],
+  "growthRecommendations": ["5 items"],
   "personalityGraph": {
-    "emotional_processing": "description",
-    "social_energy": "description",
-    "conflict_style": "description",
-    "validation_source": "description",
-    "attachment_tendency": "description",
-    "decision_making": "description"
+    "emotional_processing": "...",
+    "social_energy": "...",
+    "conflict_style": "...",
+    "validation_source": "...",
+    "attachment_tendency": "...",
+    "decision_making": "..."
   },
-  "explorationPrompts": ["6 compelling follow-up questions the user might want to explore, phrased as questions they'd ask about themselves"]
+  "explorationPrompts": ["6 follow-up questions phrased as self-inquiry"]
 }
 
-Return ONLY valid JSON, no markdown formatting or code blocks.`;
+Be specific, psychologically nuanced, and emotionally resonant. Make them feel seen. No markdown, only valid JSON.`;
 }
 
 export function buildExplorationPrompt(
-  profile: string,
+  profile: PersonalityProfile,
   question: string,
   history: { role: string; content: string }[]
 ): string {
-  const historyText = history
-    .map((m) => `${m.role === "user" ? "User" : "Personality OS"}: ${m.content}`)
-    .join("\n");
+  const profileSummary = [
+    `Archetype: ${profile.coreArchetype}`,
+    `Description: ${profile.archetypeDescription}`,
+    `Strengths: ${profile.strengths.join(", ")}`,
+    `Growth edges: ${profile.weaknesses.join(", ")}`,
+  ].join("\n");
 
-  return `You are Personality OS — an emotionally intelligent AI that helps people deeply understand themselves through personality synthesis.
+  const recentHistory = history.slice(-6);
+  const historyText = recentHistory.length
+    ? recentHistory
+        .map((m) => `${m.role === "user" ? "User" : "OS"}: ${m.content}`)
+        .join("\n")
+    : "";
 
-Here is the user's personality profile:
-${profile}
+  return `User profile:
+${profileSummary}
 
-${historyText ? `Previous conversation:\n${historyText}\n` : ""}
+${historyText ? `Recent conversation:\n${historyText}\n` : ""}Question: "${question}"
 
-The user is now asking: "${question}"
-
-Respond with deep psychological insight that:
-- Connects patterns across their personality frameworks
-- Is emotionally resonant and specific to them
-- Offers actionable guidance
-- References their specific type combinations
-- Feels intimate and psychologically nuanced
-- Is 2-4 paragraphs long
-
-At the end, suggest 2-3 natural follow-up questions they might want to explore next (prefix each with "→").
-
-Do NOT use bullet points for the main response. Write in flowing, intimate prose.`;
+Respond in 2-4 paragraphs of flowing prose. Be psychologically nuanced, specific to their type combinations, and emotionally resonant. End with 2-3 follow-up questions (prefix each with "→"). No bullet points.`;
 }

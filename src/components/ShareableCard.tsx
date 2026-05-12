@@ -42,19 +42,19 @@ export default function ShareableCard({
     >
       <div
         ref={cardRef}
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0f0a2e] via-[#1a1145] to-[#0d1b3e] p-8 border border-white/[0.08]"
+        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 p-8 shadow-xl"
       >
-        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-400/10 rounded-full blur-3xl" />
 
         <div className="relative">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-indigo-400/60 mb-1">
+          <p className="text-[10px] uppercase tracking-[0.3em] text-indigo-200 mb-1">
             Personality OS
           </p>
           <h2 className="text-2xl font-light text-white mb-2 tracking-tight">
             {archetype}
           </h2>
-          <p className="text-white/50 text-sm mb-6 leading-relaxed max-w-md">
+          <p className="text-indigo-100/70 text-sm mb-6 leading-relaxed max-w-md">
             {description}
           </p>
 
@@ -62,18 +62,18 @@ export default function ShareableCard({
             {traits.slice(0, 4).map((trait) => (
               <span
                 key={trait}
-                className="px-3 py-1 rounded-full text-xs bg-white/[0.06] text-white/60 border border-white/[0.06]"
+                className="px-3 py-1 rounded-full text-xs bg-white/15 text-white/80 border border-white/10"
               >
                 {trait}
               </span>
             ))}
           </div>
 
-          <div className="flex items-center gap-3 text-xs text-white/30">
-            <span className="px-2 py-1 rounded bg-white/[0.04]">
+          <div className="flex items-center gap-3 text-xs text-indigo-200/60">
+            <span className="px-2 py-1 rounded bg-white/10">
               {mbtiType}
             </span>
-            <span className="px-2 py-1 rounded bg-white/[0.04]">
+            <span className="px-2 py-1 rounded bg-white/10">
               Enneagram {enneagramType}
             </span>
           </div>
@@ -82,7 +82,7 @@ export default function ShareableCard({
 
       <button
         onClick={handleShare}
-        className="mt-4 w-full py-3 rounded-xl text-sm font-medium bg-white/[0.06] hover:bg-white/[0.1] text-white/60 hover:text-white/80 transition-all border border-white/[0.06] cursor-pointer"
+        className="mt-4 w-full py-3 rounded-xl text-sm font-medium bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-all border border-gray-200 cursor-pointer"
       >
         {copied ? "Copied to clipboard" : "Share your archetype"}
       </button>

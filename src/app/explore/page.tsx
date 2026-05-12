@@ -112,7 +112,7 @@ export default function ExplorePage() {
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-          className="w-8 h-8 border-2 border-indigo-300/30 border-t-indigo-300 rounded-full"
+          className="w-8 h-8 border-2 border-indigo-200 border-t-indigo-500 rounded-full"
         />
       </div>
     );
@@ -121,23 +121,23 @@ export default function ExplorePage() {
   return (
     <main className="relative min-h-screen flex flex-col">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-indigo-600/[0.03] rounded-full blur-[120px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-indigo-100/30 rounded-full blur-[120px]" />
       </div>
 
       {/* Header */}
-      <div className="relative z-10 border-b border-white/[0.06] px-6 py-4">
+      <div className="relative z-10 border-b border-gray-200 px-6 py-4">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <div>
-            <h1 className="text-sm font-medium text-white/70">
+            <h1 className="text-sm font-medium text-gray-800">
               Explore Your Personality
             </h1>
-            <p className="text-[10px] text-white/25">
+            <p className="text-[10px] text-gray-400">
               Ask anything about yourself — powered by your personality synthesis
             </p>
           </div>
           <button
             onClick={() => router.push("/profile")}
-            className="text-xs text-white/30 hover:text-white/60 transition-colors cursor-pointer"
+            className="text-xs text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
           >
             ← Back to profile
           </button>
@@ -157,12 +157,12 @@ export default function ExplorePage() {
               className="text-center py-16"
             >
               <h2
-                className="text-2xl font-light text-white/60 mb-3"
+                className="text-2xl font-light text-gray-700 mb-3"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
                 What would you like to explore?
               </h2>
-              <p className="text-sm text-white/25 mb-8 max-w-sm mx-auto">
+              <p className="text-sm text-gray-400 mb-8 max-w-sm mx-auto">
                 Ask anything about your personality, relationships, career, or
                 inner patterns.
               </p>
@@ -171,7 +171,7 @@ export default function ExplorePage() {
                   <button
                     key={i}
                     onClick={() => sendQuestion(prompt, profile, messages)}
-                    className="text-left p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.06] text-xs text-white/40 hover:text-white/60 transition-all border border-white/[0.04] hover:border-white/[0.08] cursor-pointer"
+                    className="text-left p-3 rounded-xl bg-white hover:bg-indigo-50 text-xs text-gray-500 hover:text-gray-700 transition-all border border-gray-200 hover:border-indigo-200 cursor-pointer"
                   >
                     {prompt}
                   </button>
@@ -190,12 +190,12 @@ export default function ExplorePage() {
                 className={`${msg.role === "user" ? "ml-auto max-w-md" : ""}`}
               >
                 {msg.role === "user" ? (
-                  <div className="px-5 py-3 rounded-2xl rounded-br-sm bg-indigo-500/15 text-white/70 text-sm">
+                  <div className="px-5 py-3 rounded-2xl rounded-br-sm bg-indigo-600 text-white text-sm">
                     {msg.content}
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <div className="text-sm text-white/60 leading-[1.8] whitespace-pre-wrap">
+                    <div className="text-sm text-gray-600 leading-[1.8] whitespace-pre-wrap">
                       {msg.content
                         .split("\n")
                         .filter((line) => !line.trim().startsWith("→"))
@@ -211,7 +211,7 @@ export default function ExplorePage() {
                               sendQuestion(followUp, profile, messages)
                             }
                             disabled={loading}
-                            className="text-left px-3 py-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] text-xs text-indigo-300/60 hover:text-indigo-300/80 transition-all border border-white/[0.04] hover:border-indigo-500/20 cursor-pointer disabled:opacity-50"
+                            className="text-left px-3 py-2 rounded-lg bg-white hover:bg-indigo-50 text-xs text-indigo-600 hover:text-indigo-700 transition-all border border-gray-200 hover:border-indigo-200 cursor-pointer disabled:opacity-50"
                           >
                             → {followUp}
                           </button>
@@ -228,12 +228,12 @@ export default function ExplorePage() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex items-center gap-2 text-white/30 text-sm"
+              className="flex items-center gap-2 text-gray-400 text-sm"
             >
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                className="w-4 h-4 border-2 border-indigo-300/20 border-t-indigo-300/60 rounded-full"
+                className="w-4 h-4 border-2 border-indigo-200 border-t-indigo-500 rounded-full"
               />
               Reflecting...
             </motion.div>
@@ -242,7 +242,7 @@ export default function ExplorePage() {
       </div>
 
       {/* Input */}
-      <div className="relative z-10 border-t border-white/[0.06] px-6 py-4 bg-[#06050e]/80 backdrop-blur-xl">
+      <div className="relative z-10 border-t border-gray-200 px-6 py-4 bg-white/80 backdrop-blur-xl">
         <form
           onSubmit={handleSubmit}
           className="max-w-2xl mx-auto flex items-center gap-3"
@@ -252,12 +252,12 @@ export default function ExplorePage() {
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Ask about your personality..."
             disabled={loading}
-            className="flex-1 py-3 px-4 rounded-xl bg-white/[0.04] border border-white/[0.06] text-white/80 text-sm placeholder:text-white/20 focus:outline-none focus:border-indigo-500/30 disabled:opacity-50"
+            className="flex-1 py-3 px-4 rounded-xl bg-gray-50 border border-gray-200 text-gray-700 text-sm placeholder:text-gray-300 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/20 disabled:opacity-50"
           />
           <button
             type="submit"
             disabled={!inputValue.trim() || loading}
-            className="px-5 py-3 rounded-xl bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-200 text-sm font-medium border border-indigo-500/20 transition-all disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+            className="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium transition-all shadow-sm disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
           >
             Ask
           </button>

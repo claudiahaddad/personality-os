@@ -2,15 +2,15 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #06050e;
-  --color-foreground: #e8e6f0;
+  --color-background: #faf9fe;
+  --color-foreground: #1a1a2e;
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
 }
 
 body {
@@ -20,7 +20,7 @@ body {
 }
 
 ::selection {
-  background: rgba(99, 102, 241, 0.3);
+  background: rgba(99, 102, 241, 0.2);
 }
 
 input, select, textarea {

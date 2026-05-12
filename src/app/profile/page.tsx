@@ -46,7 +46,7 @@ export default function ProfilePage() {
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-          className="w-8 h-8 border-2 border-indigo-300/30 border-t-indigo-300 rounded-full"
+          className="w-8 h-8 border-2 border-indigo-200 border-t-indigo-500 rounded-full"
         />
       </div>
     );
@@ -62,32 +62,32 @@ export default function ProfilePage() {
   return (
     <main className="relative min-h-screen pb-20">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-indigo-600/[0.04] rounded-full blur-[150px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-indigo-100/40 rounded-full blur-[150px]" />
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto px-6 pt-16">
         {/* Header */}
         <AnimatedSection>
-          <p className="text-[10px] uppercase tracking-[0.3em] text-indigo-400/50 mb-2">
+          <p className="text-[10px] uppercase tracking-[0.3em] text-indigo-500/60 mb-2">
             Your Personality OS Profile
           </p>
           <h1
-            className="text-4xl md:text-5xl font-light tracking-tight mb-3"
+            className="text-4xl md:text-5xl font-light tracking-tight mb-3 text-gray-900"
             style={{ fontFamily: "var(--font-serif)" }}
           >
             {profile.coreArchetype}
           </h1>
-          <p className="text-white/40 text-base leading-relaxed mb-4 max-w-lg">
+          <p className="text-gray-500 text-base leading-relaxed mb-4 max-w-lg">
             {profile.archetypeDescription}
           </p>
-          <div className="flex items-center gap-2 text-xs text-white/20">
-            <span className="px-2 py-1 rounded bg-white/[0.04]">
+          <div className="flex items-center gap-2 text-xs text-gray-400">
+            <span className="px-2 py-1 rounded bg-gray-100">
               {input.mbtiType}
             </span>
-            <span className="px-2 py-1 rounded bg-white/[0.04]">
+            <span className="px-2 py-1 rounded bg-gray-100">
               Enneagram {input.enneagramType}
             </span>
-            <span className="px-2 py-1 rounded bg-white/[0.04] capitalize">
+            <span className="px-2 py-1 rounded bg-gray-100 capitalize">
               {input.insightsColor.replace("-", " ")}
             </span>
           </div>
@@ -95,15 +95,15 @@ export default function ProfilePage() {
 
         {/* Tabs */}
         <AnimatedSection delay={0.2} className="mt-12 mb-8">
-          <div className="flex gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+          <div className="flex gap-1 p-1 rounded-xl bg-gray-100 border border-gray-200">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                   activeTab === tab.id
-                    ? "bg-white/[0.08] text-white/80"
-                    : "text-white/30 hover:text-white/50"
+                    ? "bg-white text-gray-800 shadow-sm"
+                    : "text-gray-400 hover:text-gray-600"
                 }`}
               >
                 {tab.label}
@@ -118,8 +118,8 @@ export default function ProfilePage() {
             {/* Strengths & Weaknesses */}
             <AnimatedSection delay={0.1}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6">
-                  <h3 className="text-xs uppercase tracking-[0.2em] text-emerald-400/60 mb-4">
+                <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                  <h3 className="text-xs uppercase tracking-[0.2em] text-emerald-600 mb-4">
                     Strengths
                   </h3>
                   <ul className="space-y-2.5">
@@ -129,16 +129,16 @@ export default function ProfilePage() {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.2 + i * 0.08 }}
-                        className="flex items-start gap-2 text-sm text-white/60"
+                        className="flex items-start gap-2 text-sm text-gray-600"
                       >
-                        <span className="text-emerald-400/40 mt-0.5">+</span>
+                        <span className="text-emerald-500 mt-0.5">+</span>
                         {s}
                       </motion.li>
                     ))}
                   </ul>
                 </div>
-                <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6">
-                  <h3 className="text-xs uppercase tracking-[0.2em] text-amber-400/60 mb-4">
+                <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                  <h3 className="text-xs uppercase tracking-[0.2em] text-amber-600 mb-4">
                     Growth Edges
                   </h3>
                   <ul className="space-y-2.5">
@@ -148,9 +148,9 @@ export default function ProfilePage() {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.2 + i * 0.08 }}
-                        className="flex items-start gap-2 text-sm text-white/60"
+                        className="flex items-start gap-2 text-sm text-gray-600"
                       >
-                        <span className="text-amber-400/40 mt-0.5">~</span>
+                        <span className="text-amber-500 mt-0.5">~</span>
                         {w}
                       </motion.li>
                     ))}
@@ -161,8 +161,8 @@ export default function ProfilePage() {
 
             {/* Personality Graph */}
             <AnimatedSection delay={0.2}>
-              <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6">
-                <h3 className="text-xs uppercase tracking-[0.2em] text-indigo-300/60 mb-5">
+              <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                <h3 className="text-xs uppercase tracking-[0.2em] text-indigo-600 mb-5">
                   Personality Graph
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
@@ -173,12 +173,12 @@ export default function ProfilePage() {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.3 + i * 0.06 }}
-                        className="p-3 rounded-xl bg-white/[0.03]"
+                        className="p-3 rounded-xl bg-gray-50"
                       >
-                        <div className="text-[10px] uppercase tracking-[0.15em] text-white/25 mb-1">
+                        <div className="text-[10px] uppercase tracking-[0.15em] text-gray-400 mb-1">
                           {key.replace(/_/g, " ")}
                         </div>
-                        <div className="text-sm text-white/60">{value}</div>
+                        <div className="text-sm text-gray-700">{value}</div>
                       </motion.div>
                     )
                   )}
@@ -204,44 +204,44 @@ export default function ProfilePage() {
             <InsightCard
               title="Attachment Tendency"
               content={profile.relationshipTendencies.attachmentTendency}
-              gradient="from-rose-500/10 to-pink-500/10"
+              gradient="from-rose-50 to-pink-50"
               delay={0.05}
             />
             <InsightCard
               title="Communication Style"
               content={profile.relationshipTendencies.communicationStyle}
-              gradient="from-violet-500/10 to-indigo-500/10"
+              gradient="from-violet-50 to-indigo-50"
               delay={0.1}
             />
             <InsightCard
               title="Conflict Patterns"
               content={profile.relationshipTendencies.conflictPattern}
-              gradient="from-amber-500/10 to-orange-500/10"
+              gradient="from-amber-50 to-orange-50"
               delay={0.15}
             />
             <InsightCard
               title="Emotional Needs"
               content={profile.relationshipTendencies.emotionalNeeds}
-              gradient="from-cyan-500/10 to-teal-500/10"
+              gradient="from-cyan-50 to-teal-50"
               delay={0.2}
             />
             <InsightCard
               title="Ideal Partner Dynamics"
               content={profile.relationshipTendencies.idealPartnerDynamics}
-              gradient="from-pink-500/10 to-rose-500/10"
+              gradient="from-pink-50 to-rose-50"
               delay={0.25}
             />
 
             <AnimatedSection delay={0.3}>
-              <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6">
-                <h3 className="text-xs uppercase tracking-[0.2em] text-indigo-300/60 mb-4">
+              <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                <h3 className="text-xs uppercase tracking-[0.2em] text-indigo-600 mb-4">
                   Compatibility Insights
                 </h3>
                 <ul className="space-y-3">
                   {profile.compatibilityInsights.map((insight, i) => (
                     <li
                       key={i}
-                      className="text-sm text-white/50 leading-relaxed pl-4 border-l border-indigo-500/20"
+                      className="text-sm text-gray-500 leading-relaxed pl-4 border-l-2 border-indigo-200"
                     >
                       {insight}
                     </li>
@@ -257,32 +257,32 @@ export default function ProfilePage() {
             <InsightCard
               title="Leadership Style"
               content={profile.careerAlignment.leadershipStyle}
-              gradient="from-blue-500/10 to-indigo-500/10"
+              gradient="from-blue-50 to-indigo-50"
               delay={0.05}
             />
             <InsightCard
               title="Motivation Style"
               content={profile.careerAlignment.motivationStyle}
-              gradient="from-emerald-500/10 to-teal-500/10"
+              gradient="from-emerald-50 to-teal-50"
               delay={0.1}
             />
             <InsightCard
               title="Collaboration Preference"
               content={profile.careerAlignment.collaborationPreference}
-              gradient="from-violet-500/10 to-purple-500/10"
+              gradient="from-violet-50 to-purple-50"
               delay={0.15}
             />
 
             <AnimatedSection delay={0.2}>
-              <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6">
-                <h3 className="text-xs uppercase tracking-[0.2em] text-emerald-300/60 mb-4">
+              <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                <h3 className="text-xs uppercase tracking-[0.2em] text-emerald-600 mb-4">
                   Ideal Environments
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {profile.careerAlignment.idealEnvironments.map((env, i) => (
                     <span
                       key={i}
-                      className="px-3 py-1.5 rounded-full text-xs bg-emerald-500/10 text-emerald-300/70 border border-emerald-500/10"
+                      className="px-3 py-1.5 rounded-full text-xs bg-emerald-50 text-emerald-700 border border-emerald-200"
                     >
                       {env}
                     </span>
@@ -292,17 +292,17 @@ export default function ProfilePage() {
             </AnimatedSection>
 
             <AnimatedSection delay={0.25}>
-              <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6">
-                <h3 className="text-xs uppercase tracking-[0.2em] text-amber-300/60 mb-4">
+              <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                <h3 className="text-xs uppercase tracking-[0.2em] text-amber-600 mb-4">
                   Burnout Triggers
                 </h3>
                 <ul className="space-y-2">
                   {profile.careerAlignment.burnoutTriggers.map((trigger, i) => (
                     <li
                       key={i}
-                      className="flex items-start gap-2 text-sm text-white/50"
+                      className="flex items-start gap-2 text-sm text-gray-500"
                     >
-                      <span className="text-amber-400/40 mt-0.5">!</span>
+                      <span className="text-amber-500 mt-0.5">!</span>
                       {trigger}
                     </li>
                   ))}
@@ -315,8 +315,8 @@ export default function ProfilePage() {
         {activeTab === "growth" && (
           <div className="space-y-4">
             <AnimatedSection>
-              <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6">
-                <h3 className="text-xs uppercase tracking-[0.2em] text-indigo-300/60 mb-5">
+              <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                <h3 className="text-xs uppercase tracking-[0.2em] text-indigo-600 mb-5">
                   Growth Recommendations
                 </h3>
                 <ul className="space-y-4">
@@ -326,9 +326,9 @@ export default function ProfilePage() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.1 + i * 0.08 }}
-                      className="flex items-start gap-3 text-sm text-white/60 leading-relaxed"
+                      className="flex items-start gap-3 text-sm text-gray-600 leading-relaxed"
                     >
-                      <span className="text-indigo-400/50 font-mono text-xs mt-0.5 shrink-0">
+                      <span className="text-indigo-400 font-mono text-xs mt-0.5 shrink-0">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                       {rec}
@@ -340,11 +340,11 @@ export default function ProfilePage() {
 
             {/* Exploration Prompts */}
             <AnimatedSection delay={0.2}>
-              <div className="rounded-2xl border border-indigo-500/10 bg-indigo-500/[0.03] p-6">
-                <h3 className="text-xs uppercase tracking-[0.2em] text-indigo-300/60 mb-4">
+              <div className="rounded-2xl border border-indigo-200 bg-indigo-50/50 p-6">
+                <h3 className="text-xs uppercase tracking-[0.2em] text-indigo-600 mb-4">
                   Go Deeper
                 </h3>
-                <p className="text-xs text-white/30 mb-4">
+                <p className="text-xs text-gray-400 mb-4">
                   Explore these questions to understand yourself more deeply.
                 </p>
                 <div className="space-y-2">
@@ -355,7 +355,7 @@ export default function ProfilePage() {
                         sessionStorage.setItem("pos_explore_question", prompt);
                         router.push("/explore");
                       }}
-                      className="w-full text-left p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.06] text-sm text-white/50 hover:text-white/70 transition-all border border-white/[0.04] hover:border-white/[0.08] cursor-pointer"
+                      className="w-full text-left p-3 rounded-xl bg-white hover:bg-indigo-50 text-sm text-gray-600 hover:text-gray-800 transition-all border border-gray-200 hover:border-indigo-200 cursor-pointer"
                     >
                       {prompt}
                     </button>
@@ -370,7 +370,7 @@ export default function ProfilePage() {
         <AnimatedSection delay={0.4} className="mt-12 text-center">
           <button
             onClick={() => router.push("/explore")}
-            className="px-8 py-3 rounded-full bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-200 text-sm font-medium border border-indigo-500/15 hover:border-indigo-500/25 transition-all cursor-pointer"
+            className="px-8 py-3 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium transition-all shadow-md shadow-indigo-500/20 cursor-pointer"
           >
             Explore your personality deeper →
           </button>

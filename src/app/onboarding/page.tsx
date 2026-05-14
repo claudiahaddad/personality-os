@@ -13,8 +13,8 @@ import {
 import LocationAutocomplete from "@/components/LocationAutocomplete";
 import type { PersonalityInput, OnboardingStep } from "@/lib/types";
 
-const STEPS: OnboardingStep[] = ["personality", "astrology", "goals"];
-const STEP_LABELS = ["Frameworks", "Astrology", "Goals"];
+const STEPS: OnboardingStep[] = ["astrology", "mbti", "extras", "goals"];
+const STEP_LABELS = ["Birthday", "MBTI", "More Frameworks", "Goals"];
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -38,8 +38,8 @@ export default function OnboardingPage() {
   };
 
   const canProceed = () => {
-    if (step === 0) return input.mbtiType && input.enneagramType && input.insightsColor;
-    if (step === 1) return input.birthDate && input.birthLocation;
+    if (step === 0) return input.birthDate && input.birthLocation;
+    if (step === 1) return input.mbtiType;
     return true;
   };
 
@@ -92,12 +92,15 @@ export default function OnboardingPage() {
             transition={{ duration: 0.3 }}
           >
             {step === 0 && (
-              <StepPersonality input={input} updateField={updateField} />
-            )}
-            {step === 1 && (
               <StepAstrology input={input} updateField={updateField} />
             )}
+            {step === 1 && (
+              <StepMBTI input={input} updateField={updateField} />
+            )}
             {step === 2 && (
+              <StepExtras input={input} updateField={updateField} />
+            )}
+            {step === 3 && (
               <StepGoals input={input} updateField={updateField} />
             )}
           </motion.div>
@@ -145,7 +148,7 @@ interface StepProps {
   ) => void;
 }
 
-function StepPersonality({ input, updateField }: StepProps) {
+function StepAstrology({ input, updateField }: StepProps) {
   return (
     <div className="space-y-8">
       <div>
@@ -153,14 +156,66 @@ function StepPersonality({ input, updateField }: StepProps) {
           className="text-2xl font-light mb-1 tracking-tight text-gray-900"
           style={{ fontFamily: "var(--font-serif)" }}
         >
-          Your personality frameworks
+          When were you born?
         </h2>
         <p className="text-gray-400 text-sm">
-          The core systems that shape how you think, feel, and relate.
+          Your birth details unlock your full astrological chart.
         </p>
       </div>
 
-      {/* MBTI */}
+      <div>
+        <label className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-3 block">
+          Birth Date
+        </label>
+        <input
+          type="date"
+          value={input.birthDate}
+          onChange={(e) => updateField("birthDate", e.target.value)}
+          className="w-full py-3 px-4 rounded-lg bg-white border border-gray-200 text-gray-700 text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/20"
+        />
+      </div>
+
+      <div>
+        <label className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-3 block">
+          Birth Time <span className="normal-case tracking-normal text-gray-300">(optional — helps determine rising sign)</span>
+        </label>
+        <input
+          type="time"
+          value={input.birthTime}
+          onChange={(e) => updateField("birthTime", e.target.value)}
+          className="w-full py-3 px-4 rounded-lg bg-white border border-gray-200 text-gray-700 text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/20"
+        />
+      </div>
+
+      <div>
+        <label className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-3 block">
+          Birth Location
+        </label>
+        <LocationAutocomplete
+          value={input.birthLocation}
+          onChange={(val) => updateField("birthLocation", val)}
+          className="w-full py-3 px-4 rounded-lg bg-white border border-gray-200 text-gray-700 text-sm placeholder:text-gray-300 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/20"
+        />
+      </div>
+    </div>
+  );
+}
+
+function StepMBTI({ input, updateField }: StepProps) {
+  return (
+    <div className="space-y-8">
+      <div>
+        <h2
+          className="text-2xl font-light mb-1 tracking-tight text-gray-900"
+          style={{ fontFamily: "var(--font-serif)" }}
+        >
+          What&apos;s your Myers-Briggs type?
+        </h2>
+        <p className="text-gray-400 text-sm">
+          Your MBTI type reveals how you perceive the world and make decisions.
+        </p>
+      </div>
+
       <div>
         <label className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-3 block">
           Myers-Briggs Type
@@ -181,11 +236,29 @@ function StepPersonality({ input, updateField }: StepProps) {
           ))}
         </div>
       </div>
+    </div>
+  );
+}
+
+function StepExtras({ input, updateField }: StepProps) {
+  return (
+    <div className="space-y-8">
+      <div>
+        <h2
+          className="text-2xl font-light mb-1 tracking-tight text-gray-900"
+          style={{ fontFamily: "var(--font-serif)" }}
+        >
+          Know your Enneagram or Insights color?
+        </h2>
+        <p className="text-gray-400 text-sm">
+          These are optional — add them if you know them for a richer profile.
+        </p>
+      </div>
 
       {/* Enneagram */}
       <div>
         <label className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-3 block">
-          Enneagram Type
+          Enneagram Type <span className="normal-case tracking-normal text-gray-300">(optional)</span>
         </label>
         <select
           value={input.enneagramType}
@@ -204,13 +277,18 @@ function StepPersonality({ input, updateField }: StepProps) {
       {/* Insights */}
       <div>
         <label className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-3 block">
-          Insights Discovery Color
+          Insights Discovery Color <span className="normal-case tracking-normal text-gray-300">(optional)</span>
         </label>
         <div className="grid grid-cols-2 gap-3">
           {INSIGHTS_COLORS.map((c) => (
             <button
               key={c.value}
-              onClick={() => updateField("insightsColor", c.value)}
+              onClick={() =>
+                updateField(
+                  "insightsColor",
+                  input.insightsColor === c.value ? "" : c.value
+                )
+              }
               className={`flex items-center gap-3 p-3 rounded-xl transition-all cursor-pointer ${
                 input.insightsColor === c.value
                   ? "bg-indigo-50 border border-indigo-200"
@@ -228,59 +306,6 @@ function StepPersonality({ input, updateField }: StepProps) {
             </button>
           ))}
         </div>
-      </div>
-    </div>
-  );
-}
-
-function StepAstrology({ input, updateField }: StepProps) {
-  return (
-    <div className="space-y-8">
-      <div>
-        <h2
-          className="text-2xl font-light mb-1 tracking-tight text-gray-900"
-          style={{ fontFamily: "var(--font-serif)" }}
-        >
-          Your astrological data
-        </h2>
-        <p className="text-gray-400 text-sm">
-          Birth details help us map emotional and archetypal tendencies.
-        </p>
-      </div>
-
-      <div>
-        <label className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-3 block">
-          Birth Date
-        </label>
-        <input
-          type="date"
-          value={input.birthDate}
-          onChange={(e) => updateField("birthDate", e.target.value)}
-          className="w-full py-3 px-4 rounded-lg bg-white border border-gray-200 text-gray-700 text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/20"
-        />
-      </div>
-
-      <div>
-        <label className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-3 block">
-          Birth Time <span className="normal-case tracking-normal text-gray-300">(optional)</span>
-        </label>
-        <input
-          type="time"
-          value={input.birthTime}
-          onChange={(e) => updateField("birthTime", e.target.value)}
-          className="w-full py-3 px-4 rounded-lg bg-white border border-gray-200 text-gray-700 text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/20"
-        />
-      </div>
-
-      <div>
-        <label className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-3 block">
-          Birth Location
-        </label>
-        <LocationAutocomplete
-          value={input.birthLocation}
-          onChange={(val) => updateField("birthLocation", val)}
-          className="w-full py-3 px-4 rounded-lg bg-white border border-gray-200 text-gray-700 text-sm placeholder:text-gray-300 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/20"
-        />
       </div>
     </div>
   );

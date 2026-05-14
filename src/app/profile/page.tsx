@@ -238,33 +238,6 @@ export default function ProfilePage() {
               </div>
             </AnimatedSection>
 
-            {/* Planetary Placements */}
-            {profile.birthChart.placements && Object.keys(profile.birthChart.placements).length > 0 && (
-              <AnimatedSection delay={0.15}>
-                <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                  <h3 className="text-xs uppercase tracking-[0.2em] text-indigo-600 mb-4">
-                    Planetary Placements
-                  </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    {Object.entries(profile.birthChart.placements).map(([planet, sign], i) => (
-                      <motion.div
-                        key={planet}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.2 + i * 0.05 }}
-                        className="p-3 rounded-xl bg-gray-50"
-                      >
-                        <div className="text-[10px] uppercase tracking-[0.15em] text-gray-400 mb-0.5 capitalize">
-                          {planet}
-                        </div>
-                        <div className="text-sm text-gray-700">{sign}</div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </AnimatedSection>
-            )}
-
             {/* Deep Dive — House-Based Readings */}
             {profile.birthChart.deepDive && profile.birthChart.deepDive.length > 0 && (
               <AnimatedSection delay={0.2}>

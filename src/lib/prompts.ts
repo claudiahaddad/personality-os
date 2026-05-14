@@ -1,10 +1,10 @@
 import { PersonalityInput, PersonalityProfile } from "./types";
 
-export function buildSynthesisPrompt(input: PersonalityInput): string {
+export function buildSynthesisPrompt(input: PersonalityInput, chartData?: string): string {
   const data = [
     `MBTI: ${input.mbtiType}`,
-    `Enneagram: ${input.enneagramType}`,
-    `Insights Color: ${input.insightsColor}`,
+    input.enneagramType && `Enneagram: ${input.enneagramType}`,
+    input.insightsColor && `Insights Color: ${input.insightsColor}`,
     `Born: ${input.birthDate}`,
     input.birthTime && `Birth Time: ${input.birthTime}`,
     input.birthLocation && `Location: ${input.birthLocation}`,
@@ -13,7 +13,11 @@ export function buildSynthesisPrompt(input: PersonalityInput): string {
     .filter(Boolean)
     .join("\n");
 
-  return `Synthesize this personality data into a unified profile. Derive their full astrological chart from the birth data — sun, moon, and rising signs at minimum, plus Mercury, Venus, Mars, Jupiter, and Saturn placements WITH house positions. If birth time is not provided, estimate rising sign and houses based on personality patterns and note it. Identify notable aspects (trines, squares, conjunctions, oppositions) and what they mean.
+  const chartSection = chartData
+    ? `\n${chartData}\n\nUSE THESE EXACT PLACEMENTS in your response. Do NOT recalculate or change any signs or houses — they are astronomically verified. Your job is to INTERPRET them, not derive them.`
+    : `\nNo verified chart data available — derive approximate placements from birth date.`;
+
+  return `Synthesize this personality data into a unified profile.${chartSection}
 
 For the "deepDive" field, write 4-6 detailed interpretations that reference specific placements + houses and explain what they mean in plain language, like a real astrologer talking to a friend. Example style:
 - "Aries Sun in the 11th + Gemini rising: bold initiator + fast-minded connector. You're built for networks, communities, and being the one who gets people moving."

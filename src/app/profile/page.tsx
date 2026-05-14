@@ -265,8 +265,32 @@ export default function ProfilePage() {
               </AnimatedSection>
             )}
 
+            {/* Deep Dive — House-Based Readings */}
+            {profile.birthChart.deepDive && profile.birthChart.deepDive.length > 0 && (
+              <AnimatedSection delay={0.2}>
+                <div className="rounded-2xl border border-indigo-200 bg-indigo-50/30 p-6">
+                  <h3 className="text-xs uppercase tracking-[0.2em] text-indigo-600 mb-5">
+                    Your Chart, Decoded
+                  </h3>
+                  <div className="space-y-4">
+                    {profile.birthChart.deepDive.map((reading, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.25 + i * 0.08 }}
+                        className="rounded-xl bg-white p-4 border border-indigo-100 shadow-sm"
+                      >
+                        <p className="text-sm text-gray-700 leading-relaxed">{reading}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </AnimatedSection>
+            )}
+
             {/* Chart Strengths & Challenges */}
-            <AnimatedSection delay={0.2}>
+            <AnimatedSection delay={0.35}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
                   <h3 className="text-xs uppercase tracking-[0.2em] text-emerald-600 mb-4">
@@ -314,17 +338,17 @@ export default function ProfilePage() {
               title="Love & Relationships"
               content={profile.birthChart.relationships}
               gradient="from-rose-50 to-pink-50"
-              delay={0.3}
+              delay={0.45}
             />
             <InsightCard
               title="Career & Ambition"
               content={profile.birthChart.career}
               gradient="from-blue-50 to-indigo-50"
-              delay={0.35}
+              delay={0.5}
             />
 
             {/* Notable Aspects */}
-            <AnimatedSection delay={0.4}>
+            <AnimatedSection delay={0.55}>
               <div className="rounded-2xl border border-purple-200 bg-purple-50/50 p-6">
                 <h3 className="text-xs uppercase tracking-[0.2em] text-purple-600 mb-4">
                   Notable Aspects

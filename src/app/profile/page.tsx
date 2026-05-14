@@ -81,16 +81,27 @@ export default function ProfilePage() {
           <p className="text-gray-500 text-base leading-relaxed mb-4 max-w-lg">
             {profile.archetypeDescription}
           </p>
-          <div className="flex items-center gap-2 text-xs text-gray-400">
-            <span className="px-2 py-1 rounded bg-gray-100">
-              {input.mbtiType}
-            </span>
-            <span className="px-2 py-1 rounded bg-gray-100">
-              Enneagram {input.enneagramType}
-            </span>
-            <span className="px-2 py-1 rounded bg-gray-100 capitalize">
-              {input.insightsColor.replace("-", " ")}
-            </span>
+          <div className="flex items-center gap-2 text-xs text-gray-400 flex-wrap">
+            {input.mbtiType && (
+              <span className="px-2 py-1 rounded bg-gray-100">
+                {input.mbtiType}
+              </span>
+            )}
+            {input.enneagramType && (
+              <span className="px-2 py-1 rounded bg-gray-100">
+                Enneagram {input.enneagramType}
+              </span>
+            )}
+            {input.insightsColor && (
+              <span className="px-2 py-1 rounded bg-gray-100 capitalize">
+                {input.insightsColor.replace("-", " ")}
+              </span>
+            )}
+            {profile.birthChart && (
+              <span className="px-2 py-1 rounded bg-gray-100">
+                {profile.birthChart.sunSign.split(" ")[0]}
+              </span>
+            )}
           </div>
         </AnimatedSection>
 

@@ -30,7 +30,7 @@ function useSessionData() {
 export default function ProfilePage() {
   const router = useRouter();
   const { profile, input } = useSessionData();
-  const [activeTab, setActiveTab] = useState<"overview" | "relationships" | "career" | "growth">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "birth-chart" | "relationships" | "career" | "growth">("overview");
   const redirected = useRef(false);
 
   useEffect(() => {
@@ -54,6 +54,7 @@ export default function ProfilePage() {
 
   const tabs = [
     { id: "overview" as const, label: "Overview" },
+    { id: "birth-chart" as const, label: "Birth Chart" },
     { id: "relationships" as const, label: "Relationships" },
     { id: "career" as const, label: "Career" },
     { id: "growth" as const, label: "Growth" },
@@ -195,6 +196,142 @@ export default function ProfilePage() {
                 mbtiType={input.mbtiType}
                 enneagramType={input.enneagramType}
               />
+            </AnimatedSection>
+          </div>
+        )}
+
+        {activeTab === "birth-chart" && profile.birthChart && (
+          <div className="space-y-6">
+            {/* Big Three */}
+            <AnimatedSection delay={0.05}>
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { label: "Sun", value: profile.birthChart.sunSign, emoji: "☀️" },
+                  { label: "Moon", value: profile.birthChart.moonSign, emoji: "🌙" },
+                  { label: "Rising", value: profile.birthChart.risingSign, emoji: "⬆️" },
+                ].map((item, i) => (
+                  <motion.div
+                    key={item.label}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + i * 0.08 }}
+                    className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm text-center"
+                  >
+                    <div className="text-2xl mb-2">{item.emoji}</div>
+                    <div className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-1">
+                      {item.label}
+                    </div>
+                    <div className="text-sm text-gray-700 font-medium">{item.value}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </AnimatedSection>
+
+            {/* Planetary Placements */}
+            {profile.birthChart.placements && Object.keys(profile.birthChart.placements).length > 0 && (
+              <AnimatedSection delay={0.15}>
+                <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                  <h3 className="text-xs uppercase tracking-[0.2em] text-indigo-600 mb-4">
+                    Planetary Placements
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {Object.entries(profile.birthChart.placements).map(([planet, sign], i) => (
+                      <motion.div
+                        key={planet}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.2 + i * 0.05 }}
+                        className="p-3 rounded-xl bg-gray-50"
+                      >
+                        <div className="text-[10px] uppercase tracking-[0.15em] text-gray-400 mb-0.5 capitalize">
+                          {planet}
+                        </div>
+                        <div className="text-sm text-gray-700">{sign}</div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </AnimatedSection>
+            )}
+
+            {/* Chart Strengths & Challenges */}
+            <AnimatedSection delay={0.2}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                  <h3 className="text-xs uppercase tracking-[0.2em] text-emerald-600 mb-4">
+                    Chart Strengths
+                  </h3>
+                  <ul className="space-y-2.5">
+                    {profile.birthChart.strengths.map((s, i) => (
+                      <motion.li
+                        key={i}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.25 + i * 0.08 }}
+                        className="flex items-start gap-2 text-sm text-gray-600"
+                      >
+                        <span className="text-emerald-500 mt-0.5">+</span>
+                        {s}
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                  <h3 className="text-xs uppercase tracking-[0.2em] text-amber-600 mb-4">
+                    Chart Challenges
+                  </h3>
+                  <ul className="space-y-2.5">
+                    {profile.birthChart.challenges.map((c, i) => (
+                      <motion.li
+                        key={i}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.25 + i * 0.08 }}
+                        className="flex items-start gap-2 text-sm text-gray-600"
+                      >
+                        <span className="text-amber-500 mt-0.5">~</span>
+                        {c}
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </AnimatedSection>
+
+            {/* Relationships & Career from Chart */}
+            <InsightCard
+              title="Love & Relationships"
+              content={profile.birthChart.relationships}
+              gradient="from-rose-50 to-pink-50"
+              delay={0.3}
+            />
+            <InsightCard
+              title="Career & Ambition"
+              content={profile.birthChart.career}
+              gradient="from-blue-50 to-indigo-50"
+              delay={0.35}
+            />
+
+            {/* Notable Aspects */}
+            <AnimatedSection delay={0.4}>
+              <div className="rounded-2xl border border-purple-200 bg-purple-50/50 p-6">
+                <h3 className="text-xs uppercase tracking-[0.2em] text-purple-600 mb-4">
+                  Notable Aspects
+                </h3>
+                <ul className="space-y-3">
+                  {profile.birthChart.notableAspects.map((aspect, i) => (
+                    <motion.li
+                      key={i}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.45 + i * 0.06 }}
+                      className="text-sm text-gray-600 leading-relaxed pl-4 border-l-2 border-purple-300"
+                    >
+                      {aspect}
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
             </AnimatedSection>
           </div>
         )}

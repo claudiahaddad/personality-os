@@ -31,6 +31,17 @@ export interface PersonalityProfile {
     motivationStyle: string;
     collaborationPreference: string;
   };
+  birthChart: {
+    sunSign: string;
+    moonSign: string;
+    risingSign: string;
+    placements: Record<string, string>;
+    strengths: string[];
+    challenges: string[];
+    relationships: string;
+    career: string;
+    notableAspects: string[];
+  };
   compatibilityInsights: string[];
   growthRecommendations: string[];
   personalityGraph: Record<string, string>;

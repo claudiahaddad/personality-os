@@ -36,6 +36,7 @@ export interface PersonalityProfile {
     moonSign: string;
     risingSign: string;
     placements: Record<string, string>;
+    deepDive: string[];
     strengths: string[];
     challenges: string[];
     relationships: string;

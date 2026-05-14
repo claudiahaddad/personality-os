@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { PersonalityInput, PersonalityProfile } from "@/lib/types";
 import { buildSynthesisPrompt } from "@/lib/prompts";
+import { calculateChart, formatChartForPrompt } from "@/lib/astrology";
 
 export async function POST(req: NextRequest) {
   const apiKey = process.env.OPENAI_API_KEY;
@@ -13,7 +14,20 @@ export async function POST(req: NextRequest) {
   }
 
   const input: PersonalityInput = await req.json();
-  const prompt = buildSynthesisPrompt(input);
+
+  let chartData: string | undefined;
+  if (input.birthDate && input.birthLocation) {
+    const chart = await calculateChart(
+      input.birthDate,
+      input.birthTime,
+      input.birthLocation
+    );
+    if (chart) {
+      chartData = formatChartForPrompt(chart);
+    }
+  }
+
+  const prompt = buildSynthesisPrompt(input, chartData);
 
   const openai = new OpenAI({ apiKey });
 
@@ -23,12 +37,12 @@ export async function POST(req: NextRequest) {
       {
         role: "system",
         content:
-          "You are a personality synthesis engine combining MBTI, Enneagram, Insights Discovery, and astrology. Return only valid JSON.",
+          "You are a personality synthesis engine combining MBTI, Enneagram, Insights Discovery, and astrology. When verified chart data is provided, use those exact placements — do not recalculate. Return only valid JSON.",
       },
       { role: "user", content: prompt },
     ],
     temperature: 0.8,
-    max_tokens: 3500,
+    max_tokens: 4000,
   });
 
   const raw = completion.choices[0]?.message?.content ?? "";
